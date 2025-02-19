@@ -128,3 +128,9 @@ class ContactInviteSerializer(serializers.Serializer):
             return value
         except User.DoesNotExist:
             raise serializers.ValidationError("User with this email does not exist")
+        
+
+class UserStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStatus
+        fields = ['user', 'is_online']

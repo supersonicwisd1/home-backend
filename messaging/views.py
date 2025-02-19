@@ -9,7 +9,7 @@ from .models import Message, Contact, UserStatus
 from .serializers import (
     MessageSerializer,
     ContactSerializer,
-    MessageEditSerializer,
+    UserStatusSerializer,
     ContactInviteSerializer
 )
 
@@ -134,6 +134,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
 class UserStatusViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserStatusSerializer 
 
     @action(detail=False, methods=['post'])
     def toggle(self, request):
@@ -144,6 +145,6 @@ class UserStatusViewSet(viewsets.GenericViewSet):
         if not created:
             status.is_online = not status.is_online
             status.save()
-        return Response({
-            'is_online': status.is_online
-        })
+        
+        serializer = self.get_serializer(status) 
+        return Response(serializer.data)

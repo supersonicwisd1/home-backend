@@ -82,7 +82,16 @@ DATABASES = {
 }
 
 # Redis and Channels Settings
-REDIS_URL = "redis://localhost:6379/1"
+# REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/1") 
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [REDIS_URL], 
+#         },
+#     },
+# }
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",  # Change to Redis in production
@@ -171,17 +180,23 @@ CORS_ALLOW_METHODS = (
 # CORS_ALLOW_ALL_ORIGINS = True  # Change this in production
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Your Vite dev server
+    "http://localhost:5173",
+    'https://home-frontend-etvh.vercel.app/',
+    'https://home-backend-gntw.onrender.com/'
 ]
 # Add WebSocket to allowed hosts
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'home-backend-gntw.onrender.com',
+    'home-frontend-etvh.vercel.app'
 ]
 
 # Add CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    'https://home-frontend-etvh.vercel.app/',
+    'https://home-backend-gntw.onrender.com/'
 ]
 CORS_ALLOW_CREDENTIALS = True
 
