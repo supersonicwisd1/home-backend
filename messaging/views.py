@@ -3,6 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from django.db.models import Q, F, Max
 from django.contrib.auth import get_user_model
 from .models import Message, Contact, UserStatus
@@ -24,7 +25,10 @@ class ContactViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Contact.objects.filter(user=self.request.user)\
+        user = self.request.user
+        if not user or user.is_anonymous:
+            raise PermissionDenied("Authentication required")
+        return Contact.objects.filter(user=user)\
             .select_related('contact', 'contact__userstatus', 'last_message')\
             .annotate(
                 last_message_time=Max('last_message__created_at')
