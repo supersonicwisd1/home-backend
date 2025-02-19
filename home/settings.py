@@ -84,19 +84,19 @@ DATABASES = {
 # Redis and Channels Settings
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/1") 
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [REDIS_URL], 
-        },
-    },
-}
 # CHANNEL_LAYERS = {
 #     "default": {
-#         "BACKEND": "channels.layers.InMemoryChannelLayer",  # Change to Redis in production
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [REDIS_URL], 
+#         },
 #     },
 # }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # Change to Redis in production
+    },
+}
 
 # REST Framework Settings (JWT Authentication)
 REST_FRAMEWORK = {
