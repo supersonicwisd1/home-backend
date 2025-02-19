@@ -91,21 +91,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 image_url=image_url
             )
 
+            # Get avatar URL instead of ImageFieldFile
+            avatar_url = self.user.avatar.url if self.user.avatar else None
+
             # Update last message for contacts
             await self.update_last_message(message)
 
             message_data = {
                 'type': 'chat_message',
                 'message': {
-                    'id': str(message.id),  # Convert to string for JSON
+                    'id': str(message.id),
                     'content': message.content,
-                    'senderId': str(self.user.id),  # Match frontend types
+                    'senderId': str(self.user.id),
                     'senderName': self.user.username,
-                    'senderAvatar': getattr(self.user, 'avatar', None),
-                    'isImage': message.is_image,  # camelCase for frontend
-                    'imageUrl': message.image_url,  # camelCase for frontend
+                    'senderAvatar': avatar_url,  # Use URL instead of ImageFieldFile
+                    'isImage': message.is_image,
+                    'imageUrl': message.image_url.url if message.image_url else None,  # Get URL if exists
                     'timestamp': message.created_at.isoformat(),
-                    'isRead': False  # camelCase for frontend
+                    'isRead': False
                 }
             }
 
@@ -122,7 +125,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         except Exception as e:
             logger.error(f"Error handling message: {str(e)}")
-            # You might want to send an error message back to the client
             await self.send(text_data=json.dumps({
                 'type': 'error',
                 'message': 'Failed to send message'

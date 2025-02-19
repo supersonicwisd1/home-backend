@@ -58,7 +58,7 @@ class MessageSerializer(serializers.ModelSerializer):
             })
         print(f"Validated data: {data}")  # Debug log
         return data
-
+    
 class ContactSerializer(serializers.ModelSerializer):
     contact_details = UserSerializer(source='contact', read_only=True)
     last_message = serializers.SerializerMethodField()
