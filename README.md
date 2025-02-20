@@ -64,7 +64,29 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-<!-- #### **7️. Start Redis**
+#### **7️. Start Redis**
+Add in the Redis url:
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/1") 
+
+Uncomment this code on home/settings:
+```python
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [REDIS_URL], 
+        },
+    },
+}
+```
+Comment this code on home/settings:
+```python
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # Change to Redis in production
+    },
+}
+```
 Make sure Redis is installed and running:
 ```bash
 redis-server
@@ -76,9 +98,9 @@ redis-cli ping
 It should return:
 ```
 PONG
-``` -->
+```
 
-#### **7. Run the Development Server**
+#### **8. Run the Development Server**
 ```bash
 python manage.py runserver
 ```
