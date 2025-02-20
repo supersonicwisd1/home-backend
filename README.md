@@ -1,7 +1,3 @@
-Here's a comprehensive README for running both the **backend** and **frontend** separately.
-
----
-
 ## **Backend README (Django & Channels)**
 
 ### **Prerequisites**
